@@ -21,6 +21,17 @@ function processOptions(form) {
     return form;
 }
 
+function displayException (data) {
+    let errorHeading = "An Exception Occurred"
+    let errorContent = `Status Code: ${data.status_code}<br>`
+    errorContent += `${data.error}<br>`
+    errorContent += `Error Number: ${data.error_no}<br>`
+
+    document.getElementById("resultsModalTitle").innerText = errorHeading;
+    document.getElementById("results-content").innerHTML = errorContent
+    resultsModal.show();
+}
+
 async function postForm(e) {
 
     const form = processOptions(new FormData(document.getElementById("checksform")));
@@ -38,6 +49,7 @@ async function postForm(e) {
     if (response.ok) {
         displayErrors(data);
     } else {
+        displayException(data)
         throw new Error(data.error);
     }
 
@@ -54,10 +66,13 @@ async function getStatus(e) {
     if (response.ok) {
         displayStatus(data);
     } else {
+        displayException(data)
         throw new Error(data.error);
     }
 
 }
+
+
 
 function displayErrors(data) {
 
